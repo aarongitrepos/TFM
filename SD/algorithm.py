@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
-from .utils import measures
-from .utils import subgroup
+from utils import measures
+from utils import subgroup
 
     
 def create_nominal_selectors(data, ignore=None):
@@ -89,8 +89,12 @@ class SubgoupDiscoverySearch:
         if len(results) > 0:
             for patt in results:
                 redund = len(list(set(pattern.selectors).intersection(patt.selectors)))
-                if redund >= (len(pattern.selectors) - 1) and pattern.wracc <= patt.wracc:
-                    return results
+                if redund >= (len(pattern.selectors) - 1):
+                    if pattern.wracc < patt.wracc:
+                        return results
+                    elif pattern.wracc > patt.wracc:
+                        results.remove(patt)
+                        break
         results.append(pattern)
         return results       
                 
@@ -145,8 +149,8 @@ class SubgoupDiscoverySearch:
                     smt = True
                     list_aux.clear()
             #print(len(patterns_aux))
-            # if depth > 0 and len(patterns_aux) > 1:
-            #     patterns_aux = measures.mrmr(patterns_aux, task.beta)
+            if depth > 0 and len(patterns_aux) > 1:
+                patterns_aux = measures.mrmr(patterns_aux, task.beta)
             #print(len(patterns_aux))
             #print("Number of patterns after filter {}".format(len(patterns_aux)))
             patterns = patterns_aux.copy()
@@ -159,9 +163,8 @@ class SubgoupDiscoverySearch:
             results = self.evaluate_if_append(results,pattern)
         results = self.check_redundancy(results)
         print(len(results))
-        results = measures.mrmr(results, task.beta)
+        results = measures.mrmr(results, task.beta, a=2)
         print(len(results))
-        #results = measures.mrmr(results, task.beta)
        
         return self.generate_df(results,task.name_df,task.target,task.beta)
 
@@ -170,7 +173,7 @@ if __name__ == "__main__":
 
     a = []
     
-    name_df = "mushrooms"
+    name_df = "splice"
     df = pd.read_csv("../datasets_fs/"+name_df+"_filter.csv")
     #df = pd.read_csv("../datasets/"+name_df+".csv")
     df = df.astype(str)

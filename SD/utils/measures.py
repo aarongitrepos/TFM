@@ -95,11 +95,12 @@ def threshold(l):
 # mean > median -> positive skewed, concentracion en menores valores
 # mean < median -> negative skewed, concentracion en mayores valores
   
-    mean = np.mean(l)
-    median = np.median(l)
-    if mean >= median:
-        return median
-    return np.percentile(l,75)
+    # mean = np.mean(l)
+    # median = np.median(l)
+    # if mean >= median:
+    #     return median
+    # return np.percentile(l,75)
+    return np.median(l)
     
 def tritmean(l):
     if len(set(l)) == 1:
@@ -167,7 +168,7 @@ def threshold_test(l, number_groups, avg):
             break
     return i
         
-def mrmr(patterns, beta):
+def mrmr(patterns, beta,a=0):
     odds_norm = normalize([[elem.wracc for elem in patterns]],norm="max")[0]
     odds_norm = [elem.wracc for elem in patterns]
     
@@ -179,4 +180,6 @@ def mrmr(patterns, beta):
         pattern.redundancy = redund
         pattern.ratio = ratio
     results = [pattern for pattern, ratio in zip(patterns,ratios) if ratio >= threshold2(ratios)]
+    if len(results) == 0:
+        return [pattern for pattern, ratio in zip(patterns,ratios) if ratio >= threshold(ratios)]
     return results
