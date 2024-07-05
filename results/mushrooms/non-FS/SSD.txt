@@ -1,0 +1,14 @@
+If Odor = f  THEN  usage = 2160 : target = ClassPr(p) = 1.0;Pr(e) = 0.0;
+ELSE IF Gill-color = b  THEN  usage = 1152 : target = ClassPr(p) = 1.0;Pr(e) = 0.0;
+ELSE IF Odor = p  THEN  usage = 256 : target = ClassPr(p) = 1.0;Pr(e) = 0.0;
+ELSE IF Odor = c  THEN  usage = 192 : target = ClassPr(p) = 1.0;Pr(e) = 0.0;
+ELSE IF Stalk-shape = t  THEN  usage = 2592 : target = ClassPr(p) = 0.0;Pr(e) = 1.0;
+ELSE IF Gill-size = b  AND  Ring-number = o  THEN  usage = 896 : target = ClassPr(p) = 0.0;Pr(e) = 1.0;
+ELSE IF Ring-number = t  AND  Spore-print-color = w  THEN  usage = 528 : target = ClassPr(p) = 0.0;Pr(e) = 1.0;
+ELSE IF Gill-size = b  THEN  usage = 108 : target = ClassPr(p) = 1.0;Pr(e) = 0.0;
+ELSE IF Bruises = f  AND  Stalk-surface-above-ring = s  THEN  usage = 168 : target = ClassPr(p) = 0.0;Pr(e) = 1.0;
+ELSE IF Stalk-surface-below-ring = y  THEN  usage = 40 : target = ClassPr(p) = 1.0;Pr(e) = 0.0;
+ELSE IF Bruises = f  THEN  usage = 24 : target = ClassPr(p) = 0.0;Pr(e) = 1.0;
+ELSE IF Veil-type = p  THEN  usage = 8 : target = ClassPr(p) = 1.0;Pr(e) = 0.0;
+ ELSE  usage = 0 : target = ClassPr(p) = 0.48202855736090594;Pr(e) = 0.517971442639094;
+2.6711775000001126

@@ -1,0 +1,19 @@
+If Bxqsq = t  AND  Rimmx = f  THEN  usage = 743 : target = ClassPr(won) = 0.0;Pr(nowin) = 1.0;
+ELSE IF Rimmx = t  THEN  usage = 584 : target = ClassPr(won) = 1.0;Pr(nowin) = 0.0;
+ELSE IF Bknwy = f  AND  Wknck = t  AND  Wkovl = t  THEN  usage = 302 : target = ClassPr(won) = 0.0;Pr(nowin) = 1.0;
+ELSE IF Bkxcr = t  AND  Wknck = t  THEN  usage = 118 : target = ClassPr(won) = 0.0;Pr(nowin) = 1.0;
+ELSE IF Bkxbq = t  AND  Wknck = f  THEN  usage = 599 : target = ClassPr(won) = 1.0;Pr(nowin) = 0.0;
+ELSE IF Bknwy = f  AND  Wkna8 = t  THEN  usage = 106 : target = ClassPr(won) = 0.0;Pr(nowin) = 1.0;
+ELSE IF Katri5 = w  THEN  usage = 99 : target = ClassPr(won) = 1.0;Pr(nowin) = 0.0;
+ELSE IF Mulch = t  THEN  usage = 57 : target = ClassPr(won) = 0.0;Pr(nowin) = 1.0;
+ELSE IF Wknck = f  AND  Wkpos = t  AND  Rxmsq = f  AND  Katri5 = n  AND  Dsopp = f  THEN  usage = 221 : target = ClassPr(won) = 1.0;Pr(nowin) = 0.0;
+ELSE IF Bkblk = f  AND  Cntxt = t  AND  Qxmsq = f  AND  R2ar8 = t  THEN  usage = 90 : target = ClassPr(won) = 0.0;Pr(nowin) = 1.0;
+ELSE IF Skrxp = t  AND  Wknck = t  THEN  usage = 30 : target = ClassPr(won) = 0.0;Pr(nowin) = 1.0;
+ELSE IF Rxmsq = f  AND  Wkovl = t  THEN  usage = 72 : target = ClassPr(won) = 0.9583333333333334;Pr(nowin) = 0.041666666666666664;
+ELSE IF Qxmsq = t  THEN  usage = 31 : target = ClassPr(won) = 0.967741935483871;Pr(nowin) = 0.03225806451612903;
+ELSE IF Reskr = t  THEN  usage = 15 : target = ClassPr(won) = 0.0;Pr(nowin) = 1.0;
+ELSE IF Wkovl = t  THEN  usage = 13 : target = ClassPr(won) = 0.0;Pr(nowin) = 1.0;
+ELSE IF Bkona = f  AND  Thrsk = f  AND  Bkon8 = f  AND  Rkxwp = f  AND  Wkpos = t  THEN  usage = 37 : target = ClassPr(won) = 1.0;Pr(nowin) = 0.0;
+ELSE IF Wkpos = t  THEN  usage = 22 : target = ClassPr(won) = 0.045454545454545456;Pr(nowin) = 0.9545454545454546;
+ ELSE  usage = 57 : target = ClassPr(won) = 0.522215269086358;Pr(nowin) = 0.47778473091364204;
+5.0110036999999465

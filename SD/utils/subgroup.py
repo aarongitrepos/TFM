@@ -11,6 +11,8 @@ class Pattern():
         self.ratio = 0
         self.wracc_gradient = 0
         self.redundancy = 0
+        self.ig = 0
+        self.ig_gradient = 0
         
     def getAttrs(self):
         return [selector[0] for selector in self.selectors]

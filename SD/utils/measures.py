@@ -27,11 +27,12 @@ def calculate_statistics_pattern(data, pattern, instances_positives_dataset):
     PS =  np.count_nonzero(np.all([instances_covered, instances_positives_dataset] , axis=0))
     return IS, PS
 
-def calculate_measures(selectors, ID, PD, IS, PS, alpha):
+def calculate_measures(selectors, ID, PD, IS, PS, alpha, IP, PP):
     pattern = subgroup.Pattern(selectors=selectors)
     pattern.PS = PS
     pattern.IS = IS
     pattern.wracc = wracc(ID,PD,IS,PS,1-alpha)
+    pattern.ig = calculate_info_gained(IP,PP,IS,PS)
     pattern.coverage = coverage(ID,IS)
     OR, OR_interval = calculate_odd_value(ID,IS,PD,PS)
     pattern.odd = OR
@@ -42,10 +43,9 @@ def calculate_measures(selectors, ID, PD, IS, PS, alpha):
 def wracc(ID,PD,IS,PS,a):
     if IS == 0:
         return -1
-    #a = 1
     p_subgroup = PS / IS
     p_dataset = PD / ID
-    return (IS / ID) ** a * (p_subgroup - p_dataset)
+    return (IS / ID) * (p_subgroup - p_dataset)
 
 def coverage(ID, IS):
     return IS / ID
@@ -74,8 +74,7 @@ def threshold2(l):
     cont = 0
     for elem in l:
         cont += (elem**2 - m)**2
-    #return np.mean(l)
-    return math.sqrt(cont/(n))
+    return np.mean([math.sqrt(cont/(n)),np.median(l)]) 
 
 def threshold_og(l):
     # WE CAN COMPUTE DE MEDIAN AND THE THRESHOLD. THE MAX VALUE IS CONSIDERED
@@ -91,24 +90,6 @@ def threshold_og(l):
     #return min(s,np.mean(l))
     return s
 
-def threshold(l):
-# mean > median -> positive skewed, concentracion en menores valores
-# mean < median -> negative skewed, concentracion en mayores valores
-  
-    # mean = np.mean(l)
-    # median = np.median(l)
-    # if mean >= median:
-    #     return median
-    # return np.percentile(l,75)
-    return np.median(l)
-    
-def tritmean(l):
-    if len(set(l)) == 1:
-        return l[0]
-    #return np.percentile(l, 75)
-    q3 = np.percentile(l, 75)
-    return q3
-
 # Function that calculate odd value for a subgroup
 def calculate_odd_value(ID,IS,PD,PS):
     a = PS
@@ -120,11 +101,21 @@ def calculate_odd_value(ID,IS,PD,PS):
         b += 0.5
         c += 0.5
         d += 0.5
-    w = 1.96*math.sqrt((1/a)+(1/b)+(1/c)+(1/d))
-    #w = 1.645*math.sqrt((1/a)+(1/b)+(1/c)+(1/d))
+    #w = 1.96*math.sqrt((1/a)+(1/b)+(1/c)+(1/d))
+    w = 1.39*math.sqrt((1/a)+(1/b)+(1/c)+(1/d))
     OR = (a*d) / (b*c)
     OR_interval = (OR*math.exp(-w), OR*math.exp(+w))
     return OR, OR_interval
+
+def odd_equivalent(odd):
+    #OR: <1.68, 1.68 - 3.47, 3.47 - 6.71, >6.71
+    if odd < 1.68:
+        return 1
+    elif odd >= 1.68 and odd < 3.47:
+        return 2
+    elif odd >= 3.47 and odd < 6.71:
+        return 3
+    return 4
 
 def evaluate_OR_range_overlap(IS1,PS1,IS2,PS2):
     a = PS1 / IS1
@@ -136,10 +127,10 @@ def evaluate_OR_range_overlap(IS1,PS1,IS2,PS2):
     if (diff_between + 1.96*std_error_diff) > 0 and (diff_between + 1.96*std_error_diff) > 0:
         return True
     return False
-        
-    
 
-def redundancy(pattern, list_patterns, beta):
+def redundancy(pattern, list_patterns):
+    if len(list_patterns) == 1:
+        return 0.01
     list_patterns_copy = list_patterns.copy()
     total_selectors = len(pattern.selectors)
     list_patterns_copy.remove(pattern)
@@ -149,37 +140,21 @@ def redundancy(pattern, list_patterns, beta):
     for elem in list_patterns_copy:
         cont_attrs += (len(list(set(pattern_attrs).intersection(elem.getAttrs()))) / total_selectors )
         cont_values += (len(list(set(pattern.selectors).intersection(elem.selectors))) / total_selectors)
-    redundancy = (cont_attrs/len(list_patterns_copy))*beta + (cont_values/len(list_patterns_copy))*(1-beta)
+    redundancy = (cont_attrs/len(list_patterns_copy))*0.5 + (cont_values/len(list_patterns_copy))*0.5
     return redundancy + 0.01
 
-def threshold_test(l, number_groups, avg):
-    #print("Number of total patterns {}, Number of possible children {}".format(number_groups,len(l)))
-    print(avg)
-    print(len(l))
-    exit(0)
-    if len(l) <= number_groups:
-        return len(l)
-    if number_groups > 0:
-        top_k_mean = np.mean(l[:number_groups])
-        if top_k_mean <= avg:
-            return number_groups
-    for i in range(number_groups+1,len(l)):
-        if np.mean(l[:i]) <= avg:
-            break
-    return i
-        
-def mrmr(patterns, beta,a=0):
-    odds_norm = normalize([[elem.wracc for elem in patterns]],norm="max")[0]
-    odds_norm = [elem.wracc for elem in patterns]
-    
+def mrmr(patterns,t):
+
     ratios = []
     for i, pattern in enumerate(patterns):   
-        redund = redundancy(pattern,patterns,beta)
-        ratio = odds_norm[i] / redund
+        redund = redundancy(pattern,patterns)
+        ratio = pattern.wracc / redund
         ratios.append(ratio)
         pattern.redundancy = redund
         pattern.ratio = ratio
-    results = [pattern for pattern, ratio in zip(patterns,ratios) if ratio >= threshold2(ratios)]
-    if len(results) == 0:
-        return [pattern for pattern, ratio in zip(patterns,ratios) if ratio >= threshold(ratios)]
-    return results
+    if t == True:
+        results = [pattern for pattern, ratio in zip(patterns,ratios) if ratio >= threshold2(ratios)]
+        # if len(results) == 0:
+        #     return [pattern for pattern, ratio in zip(patterns,ratios) if ratio >= threshold(ratios)]
+        return results
+    return patterns

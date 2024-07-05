@@ -1,0 +1,14 @@
+If Landroid/location/LocationManager;->getLastKgoodwarewnLocation = c  AND  RECEIVE_BOOT_COMPLETED = c  THEN  usage = 303 : target = ClassPr(b) = 0.0;Pr(c) = 1.0;
+ELSE IF VIBRATE = b  AND  GET_TASKS = c  AND  BATTERY_STATS = b  AND  AUTHENTICATE_ACCOUNTS = b  THEN  usage = 187 : target = ClassPr(b) = 0.0;Pr(c) = 1.0;
+ELSE IF Ljava/net/URL;->openConnection = c  AND  Landroid/telephony/TelephonyManager;->getNetworkCountryIso = c  AND  RECEIVE_SMS = b  THEN  usage = 86 : target = ClassPr(b) = 0.0;Pr(c) = 1.0;
+ELSE IF RECEIVE_BOOT_COMPLETED = c  AND  WRITE_EXTERNAL_STORAGE = b  AND  Ljava/lang/Runtime;->exec = b  THEN  usage = 76 : target = ClassPr(b) = 0.0;Pr(c) = 1.0;
+ELSE IF RECEIVE_BOOT_COMPLETED = c  AND  READ_SMS = b  AND  Ljava/lang/Runtime;->exec = b  AND  Landroid/telephony/TelephonyManager;->getSimOperator = b  THEN  usage = 139 : target = ClassPr(b) = 0.06474820143884892;Pr(c) = 0.935251798561151;
+ELSE IF DUMP = b  AND  READ_LOGS = c  THEN  usage = 17 : target = ClassPr(b) = 0.0;Pr(c) = 1.0;
+ELSE IF WAKE_LOCK = b  AND  Ljava/net/URL;->openConnection = b  AND  BLUETOOTH = b  AND  Landroid/content/pm/PackageManager;->getInstalledPackages = b  THEN  usage = 3185 : target = ClassPr(b) = 1.0;Pr(c) = 0.0;
+ELSE IF SEND_SMS = b  AND  Ljava/lang/System;->loadLibrary = c  THEN  usage = 24 : target = ClassPr(b) = 0.0;Pr(c) = 1.0;
+ELSE IF READ_PHONE_STATE = c  AND  ACCESS_NETWORK_STATE = b  AND  AUTHENTICATE_ACCOUNTS = b  AND  KILL_BACKGROUND_PROCESSES = b  THEN  usage = 24 : target = ClassPr(b) = 0.0;Pr(c) = 1.0;
+ELSE IF ACCESS_COARSE_LOCATION = c  THEN  usage = 125 : target = ClassPr(b) = 1.0;Pr(c) = 0.0;
+ELSE IF SYSTEM_ALERT_WINDOW = b  AND  Landroid/location/LocationManager;->getLastKgoodwarewnLocation = b  THEN  usage = 144 : target = ClassPr(b) = 0.9930555555555556;Pr(c) = 0.006944444444444444;
+ELSE IF Landroid/telephony/TelephonyManager;->getDeviceId = c  AND  WRITE_EXTERNAL_STORAGE = b  AND  ACCESS_WIFI_STATE = b  THEN  usage = 17 : target = ClassPr(b) = 0.0;Pr(c) = 1.0;
+ ELSE  usage = 137 : target = ClassPr(b) = 0.7986111111111112;Pr(c) = 0.2013888888888889;
+21.335845199999994
